@@ -1,0 +1,13 @@
+.error {
+    width: 100%;
+    padding: 20px;
+    background-color: #f44336;
+    color: #fff;
+    text-align: center;
+  
+    &__message {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+  
