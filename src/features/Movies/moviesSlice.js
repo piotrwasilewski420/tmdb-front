@@ -5,7 +5,9 @@ export const fetchMovies = createAsyncThunk("Movies/getMovies", async (payload) 
     try {
         const {actor, director, year, title, genre} = payload;
         const query = `?&actor=${actor}&director=${director}&year=${year}&title=${title}&genre=${genre}`;
+        console.log('siema przed movies');
         const response = await axiosInstance.get(`/movies/${query}`);
+        console.log('siema po movies');
         if(response.status !== 200) {
             throw new Error("No movies");
         }

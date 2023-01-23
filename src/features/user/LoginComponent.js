@@ -1,10 +1,15 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 import { login } from './userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -20,10 +25,14 @@ const LoginForm = () => {
     password: Yup.string().required('Password is required'),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    const res = dispatch(login(values));
-    console.log(res);
+  const handleSubmit = async (values) => {
+    const { email, password } = values;
+    const resultAction = await dispatch(login({ email, password }));
+    if (login.fulfilled.match(resultAction)) { 
+       navigate('/profile');
+    } else {
+      console.log('error');
+    }
   };
 
   return (
@@ -84,6 +93,8 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
+      {loading && <LoadingSpinner />}
+      {error && <ErrorMessage error={error} />}
     </div>
   );
 };

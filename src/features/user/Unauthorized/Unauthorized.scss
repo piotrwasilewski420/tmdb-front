@@ -1,0 +1,14 @@
+.unauthorized {
+    text-align: center;
+    
+    &__title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    &__message {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+  }
+  

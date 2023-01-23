@@ -7,12 +7,11 @@ export const login = createAsyncThunk("user/login", async (payload) => {
         if(!response.data.token) {
             throw new Error("Bad Credentials or user not found");
         }
+        console.log(response.data.token);
         axiosInstance.defaults.headers.common["Authorization"] = response.data.token;
-        const userInfo = await axiosInstance.get("/user");
-        if(!userInfo.data){
-            throw new Error("No user info");
-        }
-        return userInfo.data;
+        console.log('siema przed getem');
+        const user = await axiosInstance.get("/user");
+        return user.data;
     } catch (error) {
         throw new Error('Bad Credentials or user not found');
     }
@@ -38,22 +37,40 @@ const userSlice = createSlice({
         id: "",
         error : null,
         loading: false,
-        status: "idle"
+        status: "idle",
+        isLoggedIn: false
     },
-    reducers: {},
+    reducers: {
+        clearError: (state, action) => {
+            state.error = null;
+        },
+        logout: (state, action) => {
+            state.email = "";
+            state.name = "";
+            state.lastName = "";
+            state.role = "";
+            state.id = "";
+            state.error = null;
+            state.loading = false;
+            state.status = "idle";
+            state.isLoggedIn = false;
+        }
+    },
     extraReducers: builder => {
         builder.addCase(login.fulfilled, (state, action) => {
             state.email = action.payload.email;
             state.name = action.payload.name;
-            state.lastName = action.payload.lastName;
+            state.lastName = action.payload.last_name;
             state.role = action.payload.role;
             state.id = action.payload.id;
             state.error = null;
             state.loading = false;
             state.status = "success";
+            state.isLoggedIn = true;
         });
         builder.addCase(login.rejected, (state, action) => {
             state.email = "";
+            state.isLoggedIn = false;
             state.name = "";
             state.lastName = "";
             state.role = "";
@@ -72,6 +89,7 @@ const userSlice = createSlice({
             state.lastName = action.payload.lastName;
             state.role = action.payload.role;
             state.id = action.payload.id;
+            state.isLoggedIn = true;
             state.error = null;
             state.loading = false;
             state.status = "success";
@@ -82,6 +100,7 @@ const userSlice = createSlice({
             state.lastName = "";
             state.role = "";
             state.id = "";
+            state.isLoggedIn = false;
             state.error = action.payload;
             state.loading = false;
             state.status = "failed";
@@ -94,5 +113,7 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
+
+export const { clearError } = userSlice.actions;
 
 
