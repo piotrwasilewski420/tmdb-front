@@ -5,20 +5,27 @@ export const login = createAsyncThunk("user/login", async (payload) => {
     try {
         const response = await axiosInstance.post("/auth/login", payload);
         if(!response.data.token) {
-            throw new Error("No token");
+            throw new Error("Bad Credentials or user not found");
         }
-        console.log('siema z login', response.data.token);
         axiosInstance.defaults.headers.common["Authorization"] = response.data.token;
         const userInfo = await axiosInstance.get("/user");
         if(!userInfo.data){
             throw new Error("No user info");
         }
-        console.log('siema z login ale pozniej', userInfo.data);
         return userInfo.data;
     } catch (error) {
-        throw new Error(error);
+        throw new Error('Bad Credentials or user not found');
     }
+});
 
+export const register = createAsyncThunk("user/register", async (payload, {rejectWithValue}) => {
+    try {
+        const response = await axiosInstance.post("/auth/register", payload);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        return rejectWithValue(error.response.data);
+    }
 });
 
 const userSlice = createSlice({
@@ -28,19 +35,22 @@ const userSlice = createSlice({
         name: "",
         lastName: "",
         role: "",
-        id: ""
-
+        id: "",
+        error : null,
+        loading: false,
+        status: "idle"
     },
     reducers: {},
     extraReducers: builder => {
         builder.addCase(login.fulfilled, (state, action) => {
-            console.log('siema z action meta arg',action.meta.arg);
-            console.log(action.payload);
             state.email = action.payload.email;
             state.name = action.payload.name;
             state.lastName = action.payload.lastName;
             state.role = action.payload.role;
             state.id = action.payload.id;
+            state.error = null;
+            state.loading = false;
+            state.status = "success";
         });
         builder.addCase(login.rejected, (state, action) => {
             state.email = "";
@@ -48,13 +58,37 @@ const userSlice = createSlice({
             state.lastName = "";
             state.role = "";
             state.id = "";
+            state.error = action.error.message;
+            state.loading = false;
+            state.status = "failed";
+            console.log(action.error.message);
         });
         builder.addCase(login.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(register.fulfilled, (state, action) => {
+            state.email = action.payload.email;
+            state.name = action.payload.name;
+            state.lastName = action.payload.lastName;
+            state.role = action.payload.role;
+            state.id = action.payload.id;
+            state.error = null;
+            state.loading = false;
+            state.status = "success";
+        });
+        builder.addCase(register.rejected, (state, action) => {
             state.email = "";
             state.name = "";
             state.lastName = "";
             state.role = "";
             state.id = "";
+            state.error = action.payload;
+            state.loading = false;
+            state.status = "failed";
+            console.log(action.error.message);
+        });
+        builder.addCase(register.pending, (state, action) => {
+            state.loading = true;
         });
     }
 });

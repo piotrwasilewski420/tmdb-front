@@ -1,8 +1,18 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from './userSlice';
+import Success from './Success';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const RegisterComponent = () => {
+  
+  const error = useSelector((state) => state.user.error);
+  const loading = useSelector((state) => state.user.loading);
+  const status = useSelector((state) => state.user.status);
+  const dispatch = useDispatch();
+
   const initialValues = {
     firstName: '',
     lastName: '',
@@ -25,9 +35,14 @@ const RegisterComponent = () => {
       .oneOf([Yup.ref('password'), null], 'Passwords must match'),
   });
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    // perform registration logic here
+  const handleSubmit = async (values) => {
+    const valuesWithoutConfirmPassword = {
+      name: values.firstName,
+      last_name: values.lastName,
+      email: values.email,
+      password: values.password,
+    };
+    const res = await dispatch(register(valuesWithoutConfirmPassword));
   };
 
   return (
@@ -146,9 +161,14 @@ const RegisterComponent = () => {
             >
               Register
             </button>
+            { error && (<p className="text-red-500 text-xs italic">blad</p>)}
+            {console.log(error)}
+            { loading && (<LoadingSpinner />)}
+
           </Form>
         )}
       </Formik>
+      { status === 'success' && (<Success />)}
     </div>
   );
 };

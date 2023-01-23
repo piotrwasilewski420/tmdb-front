@@ -1,8 +1,13 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { login } from './userSlice';
 
 const LoginForm = () => {
+
+  const dispatch = useDispatch();
+
   const initialValues = {
     email: '',
     password: '',
@@ -17,7 +22,8 @@ const LoginForm = () => {
 
   const handleSubmit = (values) => {
     console.log(values);
-    // perform login logic here
+    const res = dispatch(login(values));
+    console.log(res);
   };
 
   return (
