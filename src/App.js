@@ -5,6 +5,7 @@ import RegisterComponent from './features/user/RegisterComponent';
 import UserProfile from './features/user/UserProfile';
 import { useSelector } from 'react-redux';
 import Unauthorized from './features/user/Unauthorized/Unauthorized';
+import DetailedMovie from './features/detailedMovie/DetailedMovie';
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
       <Route path="/login" element={<LoginComponent />} />
       <Route path="/register" element={<RegisterComponent />} />
       <Route path="/profile" element={isLoggedIn ? <UserProfile /> : <Unauthorized/>} />
+      <Route path="/movies/:id" element={<DetailedMovie/>}/>
    </Routes>
   );
 }
