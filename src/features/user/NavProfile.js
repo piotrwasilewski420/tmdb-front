@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NavProfile = ({name}) => {
     return (
-        <nav className="bg-gray-800 text-white flex items-center justify-between py-2">
+        <nav className="bg-gray-800 text-white flex items-center justify-around py-2 fixed top-0 w-full">
       <div className="text-lg font-medium">
         Welcome, {name}!
       </div>

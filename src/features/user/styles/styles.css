@@ -1,0 +1,26 @@
+.navbar {
+    position: fixed;
+    top: 0;
+
+}
+
+.container {
+    display: flex;
+
+}
+
+.moviesPanel {
+    /* start on the right */
+    width: 70vw;
+    margin-left: auto;
+
+}
+
+.movieForm {
+    position: fixed;
+    top: 22vh;
+    /* bottom: 10vh; */
+    left: 5vw;
+    width: 20vw;
+
+}

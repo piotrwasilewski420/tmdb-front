@@ -40,7 +40,7 @@ const MovieForm = () => {
   }, [formData]);
 
   return (
-    <form className="w-1/2 mx-auto p-5 flex flex-col items-center justify-center">
+    <form className="movieForm">
       <div className="mb-4 ">
         <label className="block text-gray-700 font-medium mb-2" htmlFor="actor">
           Actor
