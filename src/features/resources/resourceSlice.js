@@ -40,6 +40,33 @@ export const fetchWishlisted = createAsyncThunk("Genres/getWishlisted", async ()
     }
 });
 
+export const favoritesThunk = createAsyncThunk("Genres/favoritesThunk", async (payload) => {
+    try {
+        if(payload.fav) {
+            const response = await axiosInstance.delete(`/movie/favorite/${payload.id}`);
+        } else {
+            const response = await axiosInstance.put(`/movie/favorite/${payload.id}`);
+        }
+    } catch (error) {
+        throw new Error(error.message);
+    }
+    const result = await axiosInstance.get("/user/favs");
+    return result.data;
+});
+
+export const wishlistedThunk = createAsyncThunk("Genres/wishlistedThunk", async (payload) => {
+    try {
+        if(payload.wish) {
+            const response = await axiosInstance.delete(`/movie/wishlist/${payload.id}`);
+        } else {
+            const response = await axiosInstance.put(`/movie/wishlist/${payload.id}`);
+        }
+    } catch (error) {
+        throw new Error(error.message);
+    }
+    const result = await axiosInstance.get("/user/wishlist");
+    return result.data;
+});
 
 const genresSlice = createSlice({
     name: 'Genres',
@@ -82,6 +109,28 @@ const genresSlice = createSlice({
             state.wishlisted = action.payload;
         });
         builder.addCase(fetchWishlisted.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(favoritesThunk.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(favoritesThunk.fulfilled, (state, action) => {
+            state.loading = false;
+            state.favorites = action.payload;
+        });
+        builder.addCase(favoritesThunk.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(wishlistedThunk.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(wishlistedThunk.fulfilled, (state, action) => {
+            state.loading = false;
+            state.wishlisted = action.payload;
+        });
+        builder.addCase(wishlistedThunk.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

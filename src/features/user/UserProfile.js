@@ -3,7 +3,7 @@ import NavProfile from './NavProfile';
 import { useSelector } from 'react-redux';
 import MovieForm from '../Movies/MovieForm';
 import MoviesPanel from '../Movies/MoviesPanel';
-import './styles/styles.css';
+// import './styles/styles.css';
 import LoadingSpinner from '../Movies/LoadingSpinner/LoadingSpinner';
 
 export default function UserProfile() {
@@ -12,9 +12,13 @@ export default function UserProfile() {
   return (
     <>
       <NavProfile name={name} className="navbar"/>
-      <div className="container mt-20">
-      <MovieForm className="left-bar" style={{maxHeight:'20vh'}}/>
-        {loading ? <LoadingSpinner className="right-bar"/> : <MoviesPanel className="right-bar"/>}
+      <div className="flex flex-row w-screen">
+        <div className='w-1/4 fixed pl-6 pt-14'>     
+          <MovieForm className="" style={{maxHeight:'20vh'}}/>
+        </div>
+        <div className='pl-64 mt-14'>
+          {loading ? <LoadingSpinner /> : <MoviesPanel/>}
+        </div>
       </div>
     </>
         );

@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchMovieById, sendComment } from './detailedMovieSlice';
-import { fetchFavorites, fetchWishlisted } from '../resources/resourceSlice';
+import { fetchFavorites, fetchWishlisted, favoritesThunk, wishlistedThunk } from '../resources/resourceSlice';
+// import myAxios from '../../myAxios';
 import NavProfile from '../user/NavProfile';
 import Actor from './Actor';
 import Director from './Director';
@@ -12,8 +13,10 @@ import Comments from './Comments';
 
 const DetailedMovie = () => {
     const {name} = useSelector(state => state.user);
-    const {title,tagline,poster_path,director,actors,image_urls,rating,genre,loading,error,released,comments} = useSelector(state => state.detailedMovie);
+    const {title,tagline,poster_path,director,actors,image_urls,rating,genre,error,released,comments} = useSelector(state => state.detailedMovie);
+    const movieLoading = useSelector(state => state.detailedMovie.loading);
     const {favorites, wishlisted} = useSelector(state => state.genres);
+    const resourcesLoading = useSelector(state => state.genres.loading);
     const { id } = useParams();
     const dispatch = useDispatch();
     const fetchDetailedMovie = async () => {
@@ -25,13 +28,13 @@ const DetailedMovie = () => {
     const fetchWishlistedList = async () => {
         await dispatch(fetchWishlisted());
     };
+    const fetchAll = async () => {
+        await fetchDetailedMovie();
+        await fetchFavoritesList();
+        await fetchWishlistedList();
+    };
     useEffect(() => {
-        fetchDetailedMovie();
-        fetchFavoritesList();
-        fetchWishlistedList();
-        console.log(favorites.map(fav => fav.id).includes(id));
-        console.log(favorites.map(fav => fav.id), id);
-        console.log(wishlisted.map(fav => fav.id).includes(id), id);
+        fetchAll();
     }, []);
 
   const [comment, setComment] = useState('');
@@ -44,9 +47,22 @@ const DetailedMovie = () => {
     event.preventDefault();
     dispatch(sendComment({id, comment}));
   };
+
+  const handleFavorites = async (e) => {
+    e.preventDefault();
+    const fav = favorites.map(fav => fav.id).includes(id);
+    await dispatch(favoritesThunk({fav,id}))
+    
+  };
+  
+  const handleWishlist = async (e) => {
+    e.preventDefault();
+    const wish = wishlisted.map(wish => wish.id).includes(id);
+    await dispatch(wishlistedThunk({wish,id}))
+  };
+
   return (
     <>
-    
     <div className="bg-white rounded-lg overflow-hidden">
       <Carousel showThumbs={false}>
         {image_urls.map((image, index) => (
@@ -57,15 +73,21 @@ const DetailedMovie = () => {
       </Carousel>
       <NavProfile name={name} className="navbar"/>
       <div className="px-6 py-4">
+        <div className="px-6 py-4" onClick={handleFavorites}>
         {
           
           favorites.map(fav => fav.id).includes(id) ?  
-          <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from favorites </button>
-          : <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to favorites </button>
+          <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from favorites </button>
+          : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to favorites </button>
         }
+        </div>
+        <div className="px-6 py-4" onClick={handleWishlist}>
         {
-          wishlisted.map(wish => wish.id).includes(id) ?  <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from watchlist </button> : <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to watchlist </button>
+          wishlisted.map(wish => wish.id).includes(id) ?
+            <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from watchlist </button> 
+            : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to watchlist </button>
         }
+        </div>
         {/* <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full">
           Add to watchlist
         </button>

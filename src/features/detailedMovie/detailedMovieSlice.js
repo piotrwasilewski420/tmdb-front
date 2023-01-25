@@ -20,10 +20,12 @@ export const sendComment = createAsyncThunk("Movie/sendComment", async (payload)
         const response = await axiosInstance.post(`/movie/comment/${payload.id}`, {
             comment: payload.comment
         });
+        console.log('to jest response.data, ',response.data);
         if(response.status !== 200) {
             throw new Error("No movie");
         }
-        return response.data;
+        const comments = await axiosInstance.get(`/movie/${payload.id}`);
+        return comments.data;
         }
         catch (error) {
         throw new Error(error.message);
@@ -71,6 +73,19 @@ const movieSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
+        builder.addCase(sendComment.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(sendComment.fulfilled, (state, action) => {
+            state.loading = false;
+            console.log('mowie z tunka ',action.payload.comments);
+            state.comments = action.payload.comments;
+        });
+        builder.addCase(sendComment.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        
     }
 });
 
