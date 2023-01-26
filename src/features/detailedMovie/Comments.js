@@ -1,12 +1,13 @@
 import React from 'react';
 import Comment from './Comment';
+import styles from "./detailedMovie.module.scss";
 
-const Comments = ({ comments }) => {
+const Comments = ({ comments, movieId }) => {
   console.log(comments);
   return (
-    <div className="bg-gray-200 p-4 rounded-md">
+    <div className={styles.comments}>
       {comments.map((comment, index) => (
-        <Comment key={index} comment={comment.comments} name={comment.user.name} />
+        <Comment key={index} movieId={movieId} commentId={comment.id} comment={comment.comments} name={comment.user.name} id={comment.user.id}/>
       ))}
     </div>
   );

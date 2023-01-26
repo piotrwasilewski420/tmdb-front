@@ -1,0 +1,142 @@
+.detailedMovie {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    .title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 2vh;
+    }
+
+    .main {
+
+        display: flex;
+        flex-direction: column;
+
+        .rating {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            .btns {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
+                .btn {
+                    margin: 0 5px;
+                }
+            }
+        }
+
+
+        .movie_info {
+            border-top: 3px solid #213b58;
+            display: flex;
+            flex-wrap: wrap;
+            height: 65vh;
+
+
+
+            .header {
+                font-size: larger;
+                font-weight: bold;
+                margin-bottom: 2vh;
+            }
+
+            .left {
+                flex: 1 1 50%;
+                height: 50vh;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+
+                .leftLeft {
+                    flex: 1 1 50%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .leftRight {
+                    flex: 1 1 50%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .poster {
+                    width: 80%;
+                }
+            }
+
+            .right {
+                height: 50vh;
+
+                border-left: 3px solid #213b58;
+
+                .actors {
+                    display: flex;
+                    flex-wrap: wrap;
+                    overflow-y: auto;
+
+                    .actor {
+                        flex: 1 1 40%;
+
+                        @media (max-width: 768px) {
+                            flex: 1 1 100%;
+                        }
+                    }
+                }
+
+                flex: 1 1 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+
+
+
+    }
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+
+    .comment {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        align-items: center;
+
+    }
+
+    .commentContent {
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        margin-left: 10px;
+
+        .author {
+            max-width: 100px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .text {
+            margin-top: 5px;
+        }
+    }
+}

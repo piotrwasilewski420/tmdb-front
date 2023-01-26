@@ -5,11 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchMovieById, sendComment } from './detailedMovieSlice';
 import { fetchFavorites, fetchWishlisted, favoritesThunk, wishlistedThunk } from '../resources/resourceSlice';
-// import myAxios from '../../myAxios';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import NavProfile from '../user/NavProfile';
 import Actor from './Actor';
 import Director from './Director';
 import Comments from './Comments';
+import Rating from './Rating';
+import styles from "./detailedMovie.module.scss";
 
 const DetailedMovie = () => {
     const {name} = useSelector(state => state.user);
@@ -61,87 +63,102 @@ const DetailedMovie = () => {
     await dispatch(wishlistedThunk({wish,id}))
   };
 
-  return (
-    <>
-    <div className="bg-white rounded-lg overflow-hidden">
-      <Carousel showThumbs={false}>
-        {image_urls.map((image, index) => (
-          <div key={index}>
-            <img src={image} alt={`Image ${index + 1}`} className="w-full h-64 object-cover" />
-          </div>
-        ))}
-      </Carousel>
-      <NavProfile name={name} className="navbar"/>
-      <div className="px-6 py-4">
-        <div className="px-6 py-4" onClick={handleFavorites}>
-        {
+  return (movieLoading || resourcesLoading) ? (<LoadingSpinner/>) : (
+   <>
+      <div className={styles.detailedMovie}>
+        
+        <NavProfile name={name} />
           
-          favorites.map(fav => fav.id).includes(id) ?  
-          <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from favorites </button>
-          : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to favorites </button>
-        }
+            
+        <div className={styles.main}>
+          <div className={styles.rating}>
+            <Rating title={title}/>
+            <div className={styles.btns}>
+              <div className="px-6 py-4" onClick={handleFavorites}>
+                {favorites.map(fav => fav.id).includes(id) ?  
+                  <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from favorites </button>
+                  : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to favorites </button>
+                }
+                </div>
+
+              <div className="px-6 py-4" onClick={handleWishlist}>
+                {wishlisted.map(wish => wish.id).includes(id) ?
+                  <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from watchlist </button> 
+                  : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to watchlist </button>
+                }
+              </div>
+            </div>
+          </div>
+          <div className={styles.movie_info}>
+            <div className={styles.left}>
+              <div className={styles.leftLeft}>
+              <img src={poster_path} alt={title} className={styles.poster} />
+              </div>
+              <div className={styles.leftRight}>
+
+              <p className={styles.title}>{title}</p>
+              <ul>
+              <li className="font-medium">Rating: {rating}</li> 
+            <li className="font-medium">Tagline: {tagline}</li> 
+            <li className="font-medium">Genre: {genre}</li> 
+            <li className="font-medium">Release date: {released}</li> 
+              </ul>
+            <div className={styles.directors}>
+            <p className={styles.header}>Directors:</p>
+            <ul>
+              {director.map((director, index) => (
+                <li key={index}>
+                  <Director {...director} />
+                  </li>
+                  ))
+                }
+            </ul>
+            </div>
+                </div>
+            </div>
+            <div className={styles.right}>
+            <p className={styles.title}>{title}</p> 
+            <div className={styles.actors}>
+            
+            {
+              actors.map((actor, index) => (
+                <div key={index} className={styles.actor}>
+                  <Actor  {...actor} />
+                </div>
+                ))
+              }
+            
+          </div>
+            </div>
+          </div>
+          
         </div>
-        <div className="px-6 py-4" onClick={handleWishlist}>
-        {
-          wishlisted.map(wish => wish.id).includes(id) ?
-            <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from watchlist </button> 
-            : <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Add to watchlist </button>
-        }
+        <div>
+        <Carousel showThumbs={false} className="">
+          {image_urls.map((image, index) => (
+            <div key={index}>
+              <img src={image} alt={`Image ${index + 1}`} className="w-500px h-500px object-cover" />
+            </div>
+          ))}
+        </Carousel>
         </div>
-        {/* <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full">
-          Add to watchlist
+          <div className={styles.title}>Comments:</div>
+        <Comments comments={comments} movieId={id}/>
+        <div className="px-6 py-4">
+          <textarea onChange={handleChange} className="bg-gray-200 rounded-lg w-full py-2 px-3" placeholder="Leave a comment"></textarea>
+      <button
+          className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Submit
         </button>
-        <button className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full">
-          Add to favorites
-        </button> */}
-        <div className="font-bold text-xl mb-2">{title}</div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Rating:</span> {rating}
-        </div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Tagline:</span> {tagline}
-        </div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Genre:</span> {genre}
-        </div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Release date:</span> {released}
-        </div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Director:</span> 
-          {
-            director.map((director, index) => (
-              <Director key={index} {...director} />
-            ))
-          }
-        </div>
-        <div className="text-gray-700 text-base">
-          <span className="font-medium">Actors:</span> 
-          {
-            actors.map((actor, index) => (
-              <Actor key={index} {...actor} />
-            ))
-          }
         </div>
       </div>
-      <div className="px-6 py-4">
-        <img src={poster_path} alt={title} className="w-full h-64 object-cover" />
-      </div>
-      <Comments comments={comments}/>
-      <div className="px-6 py-4">
-        <div className="font-medium">Comments:</div>
-        <textarea onChange={handleChange} className="bg-gray-200 rounded-lg w-full py-2 px-3" placeholder="Leave a comment"></textarea>
-      </div>
-    </div>
-    <button
-        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-        type="submit"
-        onClick={handleSubmit}
-      >
-        Submit
-      </button>
-    </>
-  );
+      
+      </>
+    )
 };
 
 export default DetailedMovie;
+ 
