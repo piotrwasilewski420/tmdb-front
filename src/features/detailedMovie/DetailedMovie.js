@@ -4,6 +4,8 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchMovieById, sendComment } from './detailedMovieSlice';
+import { blockMovie } from '../Movies/moviesSlice';
+import { useNavigate } from 'react-router-dom';
 import { fetchFavorites, fetchWishlisted, favoritesThunk, wishlistedThunk } from '../resources/resourceSlice';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import NavProfile from '../user/NavProfile';
@@ -41,6 +43,8 @@ const DetailedMovie = () => {
 
   const [comment, setComment] = useState('');
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     setComment(event.target.value);
   };
@@ -63,6 +67,12 @@ const DetailedMovie = () => {
     await dispatch(wishlistedThunk({wish,id}))
   };
 
+  const handleBlock = async (e) => {
+    e.preventDefault();
+    await dispatch(blockMovie({id}))
+    navigate('/profile')
+  };
+
   return (movieLoading || resourcesLoading) ? (<LoadingSpinner/>) : (
    <>
       <div className={styles.detailedMovie}>
@@ -74,6 +84,11 @@ const DetailedMovie = () => {
           <div className={styles.rating}>
             <Rating title={title}/>
             <div className={styles.btns}>
+              <div className="px-6 py-4">
+                <button
+                onClick={handleBlock} 
+                className="bg-red-900 text-white font-bold py-2 px-4 rounded-full">Block</button>
+              </div>
               <div className="px-6 py-4" onClick={handleFavorites}>
                 {favorites.map(fav => fav.id).includes(id) ?  
                   <button  className="bg-gray-900 text-white font-bold py-2 px-4 rounded-full"> Remove from favorites </button>

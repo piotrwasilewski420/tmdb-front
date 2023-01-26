@@ -6,6 +6,8 @@ import UserProfile from './features/user/UserProfile';
 import { useSelector } from 'react-redux';
 import Unauthorized from './features/user/Unauthorized/Unauthorized';
 import DetailedMovie from './features/detailedMovie/DetailedMovie';
+import Actives from './features/resources/Actives';
+import Filter from './features/Movies/Filter';
 
 const App = () => {
 
@@ -15,8 +17,10 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<LoginComponent />} />
       <Route path="/register" element={<RegisterComponent />} />
-      <Route path="/profile" element={isLoggedIn ? <UserProfile /> : <Unauthorized/>} />
-      <Route path="/movies/:id" element={<DetailedMovie/>}/>
+      <Route path="/profile" element={isLoggedIn ? <UserProfile /> : <Unauthorized/>}/>
+        <Route path="/profile/movie/:id" element={isLoggedIn ? <DetailedMovie/> : <Unauthorized/>}/>
+        <Route path="/profile/actives" element={isLoggedIn ? <Actives/> : <Unauthorized/>}/>
+        <Route path="/filter" element={<Filter/>}/>
    </Routes>
   );
 }

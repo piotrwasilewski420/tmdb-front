@@ -8,10 +8,10 @@ const NavProfile = ({name}) => {
       </div>
       <div className="flex space-x-4">
         <Link
-          to="/settings"
+          to="/profile/actives"
           className="block px-2 py-1 text-sm font-medium hover:text-indigo-300 rounded-md hover:bg-indigo-50"
         >
-          Settings
+          Most Actives
         </Link>
         <Link
           to="/favorites"

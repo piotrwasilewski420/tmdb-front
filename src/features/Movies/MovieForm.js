@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies } from './moviesSlice';
 import { fetchGenres } from '../resources/resourceSlice';
+import Filter from './Filter';
 
 const MovieForm = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const MovieForm = () => {
   }, [formData]);
 
   return (
+    <>
     <form className="movieForm">
       <div className="mb-4 ">
         <label className="block text-gray-700 font-medium mb-2" htmlFor="actor">
@@ -124,6 +126,8 @@ const MovieForm = () => {
         Submit
       </button>
     </form>
+    <Filter />
+    </>
   );
 };
 

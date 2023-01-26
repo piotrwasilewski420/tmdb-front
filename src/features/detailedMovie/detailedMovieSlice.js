@@ -121,8 +121,7 @@ const movieSlice = createSlice({
         builder.addCase(deleteComment.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
-        });
-        
+        });   
     }
 });
 

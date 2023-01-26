@@ -18,6 +18,19 @@ export const fetchMovies = createAsyncThunk("Movies/getMovies", async (payload) 
     }
 });
 
+export const blockMovie = createAsyncThunk("Movie/blockMovie", async (payload) => {
+    try {
+        const response = await axiosInstance.put(`/movie/block/${payload.id}`);
+        if(response.status !== 200) {
+            throw new Error("No movie");
+        }
+        return response.data;
+        }
+        catch (error) {
+        throw new Error(error.message);
+    }
+});
+
 const moviesSlice = createSlice({
     name: 'Movies',
     initialState: {
@@ -25,7 +38,45 @@ const moviesSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+        sortMovies: (state, action) => {
+            const {field, order} = action.payload;
+            if(field === 'title') {
+                state.movies.sort((a, b) => {
+                    if(a.movie.title < b.movie.title) {
+                        return order === 'asc' ? -1 : 1;
+                    }
+                    if(a.movie.title > b.movie.title) {
+                        return order === 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+            }
+            if(field === 'year') {
+                state.movies.sort((a, b) => {
+                    if(a.movie.released < b.movie.released) {
+                        return order === 'asc' ? -1 : 1;
+                    }
+                    if(a.movie.released > b.movie.released) {
+                        return order === 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+            }
+            if(field === 'rating'){
+                state.movies.sort((a, b) => {
+                    if(a.rating < b.rating) {
+                        return order === 'asc' ? -1 : 1;
+                    }
+                    if(a.rating > b.rating) {
+                        return order === 'asc' ? 1 : -1;
+                    }
+                    return 0;
+                });
+            }
+
+        }
+    },
     extraReducers: builder => {
         builder.addCase(fetchMovies.pending, (state, action) => {
             state.loading = true;
@@ -38,7 +89,21 @@ const moviesSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
+        builder.addCase(blockMovie.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(blockMovie.fulfilled, (state, action) => {
+            state.loading = false;
+            state.movies = state.movies.filter(movie => movie.id !== action.payload.id);
+        });
+        builder.addCase(blockMovie.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
     }
 });
 
 export default moviesSlice.reducer;
+
+export const {sortMovies} = moviesSlice.actions;
+

@@ -3,7 +3,6 @@ import NavProfile from './NavProfile';
 import { useSelector } from 'react-redux';
 import MovieForm from '../Movies/MovieForm';
 import MoviesPanel from '../Movies/MoviesPanel';
-// import './styles/styles.css';
 import LoadingSpinner from '../Movies/LoadingSpinner/LoadingSpinner';
 
 export default function UserProfile() {

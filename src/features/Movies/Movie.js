@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const Movie = ({ title, released, tagline, poster_path, rating,id }) => {
   const navigate = useNavigate();
   const redirect = (id) => {
-    navigate(`/movies/${id}`);
+    navigate(`/profile/movie/${id}`);
   };
 
     const actual_rating = Math.round(rating * 100) / 100;
