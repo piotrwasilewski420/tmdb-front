@@ -43,7 +43,7 @@ const MovieForm = () => {
   return (
     <>
     <form className="movieForm">
-      <div className="mb-4 ">
+      <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2" htmlFor="actor">
           Actor
         </label>
@@ -122,9 +122,6 @@ const MovieForm = () => {
           onChange={handleChange}
         />
       </div>
-      <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-        Submit
-      </button>
     </form>
     <Filter />
     </>

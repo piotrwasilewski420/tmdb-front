@@ -9,8 +9,8 @@ function Filter() {
 
   return (
     <div className="bg-gray-200 p-4">
-      <div className="flex justify-between">
-        <div className="flex">
+      <div className="flex flex-col justify-between">
+        <div className="flex flex-col gap-4">
           <select
             className="border rounded p-2 mr-2"
             value={sort.field}
@@ -21,7 +21,7 @@ function Filter() {
             <option value="year">Year</option>
             <option value="rating">Rating</option>
           </select>
-          <div className="flex">
+          <div className="flex flex-col gap-4">
             <label className="mr-2">
               <input
                 type="radio"
@@ -48,7 +48,7 @@ function Filter() {
         onClick={() => {
             dispatch(sortMovies(sort));
         }}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-4">
             Filter
         </button>
       </div>

@@ -18,9 +18,36 @@ export const fetchMovies = createAsyncThunk("Movies/getMovies", async (payload) 
     }
 });
 
+export const deleteMovie = createAsyncThunk("Movie/deleteMovie", async (payload) => {
+    try {
+        const response = await axiosInstance.delete(`/movie/${payload}`);
+        if(response.status !== 200) {
+            throw new Error("No movie");
+        }
+        return payload;
+        }
+        catch (error) {
+        throw new Error(error.message);
+    }
+});
+
 export const blockMovie = createAsyncThunk("Movie/blockMovie", async (payload) => {
     try {
+        console.log(`payload w blockMovie: ${payload.id}`);
         const response = await axiosInstance.put(`/movie/block/${payload.id}`);
+        if(response.status !== 200) {
+            throw new Error("No movie");
+        }
+        return response.data;
+        }
+        catch (error) {
+        throw new Error(error.message);
+    }
+});
+
+export const unblockMovie = createAsyncThunk("Movie/unblockMovie", async (payload) => {
+    try {
+        const response = await axiosInstance.delete(`/movie/block/${payload}`);
         if(response.status !== 200) {
             throw new Error("No movie");
         }
@@ -97,6 +124,27 @@ const moviesSlice = createSlice({
             state.movies = state.movies.filter(movie => movie.id !== action.payload.id);
         });
         builder.addCase(blockMovie.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(deleteMovie.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteMovie.fulfilled, (state, action) => {
+            state.loading = false;
+            state.movies = state.movies.filter(movie => movie.id !== action.payload);
+        });
+        builder.addCase(deleteMovie.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(unblockMovie.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(unblockMovie.fulfilled, (state, action) => {
+            state.loading = false;
+        });
+        builder.addCase(unblockMovie.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

@@ -48,6 +48,19 @@ export const deleteComment = createAsyncThunk("Movie/deleteComment", async ({mov
     }
 });
 
+export const deleteCommentByAdmin = createAsyncThunk("Movie/deleteCommentByAdmin", async (payload) => {
+    try {
+        const response = await axiosInstance.delete(`/admin/comment/${payload.commentId}`);
+        if(response.status !== 200) {
+            throw new Error("No movie");
+        }
+        return payload.commentId;
+        }
+        catch (error) {
+        throw new Error(error.message);
+    }
+});
+
 const movieSlice = createSlice({
     name: 'Movie',
     initialState: {
@@ -121,6 +134,13 @@ const movieSlice = createSlice({
         builder.addCase(deleteComment.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
+        });
+        builder.addCase(deleteCommentByAdmin.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteCommentByAdmin.fulfilled, (state, action) => {
+            state.loading = false;
+            state.comments = state.comments.filter(comment => comment.id !== action.payload);
         });   
     }
 });

@@ -12,8 +12,8 @@ export default function UserProfile() {
     <>
       <NavProfile name={name} className="navbar"/>
       <div className="flex flex-row w-screen">
-        <div className='w-1/4 fixed pl-6 pt-14'>     
-          <MovieForm className="" style={{maxHeight:'20vh'}}/>
+        <div className='w-1/8 fixed pl-6 pt-14'>     
+          <MovieForm style={{maxHeight:'20vh'}}/>
         </div>
         <div className='pl-64 mt-14'>
           {loading ? <LoadingSpinner /> : <MoviesPanel/>}

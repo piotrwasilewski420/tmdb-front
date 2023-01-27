@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from "./detailedMovie.module.scss";
-import { FaRegTimesCircle } from 'react-icons/fa';
+// import { FaRegTimesCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { deleteComment } from './detailedMovieSlice';
+import { deleteComment, deleteCommentByAdmin } from './detailedMovieSlice';
 
 
 const Comment = ({ comment, name, id, movieId, commentId }) => {
   const userId = useSelector(state => state.user.id);
+  const role = useSelector(state => state.user.role);
   return (
     <div className={styles.comment}>
     <div className={styles.commentContent}>
@@ -19,10 +20,10 @@ const Comment = ({ comment, name, id, movieId, commentId }) => {
       </div>
     </div>
     {
-      userId === id &&
+      (userId === id || role === 'ADMIN') ?
       <div className={styles.commentBtns}>
       <CancelButton movieId={movieId} commentId={commentId} userId={id} />
-      </div>
+      </div> : null
     }
     
     </div>
@@ -36,15 +37,20 @@ const CancelButton = ({
   commentId,
   userId
 }) => {
+  const role = useSelector(state => state.user.role);
   const dispatch = useDispatch();
   const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(deleteComment({movieId, commentId}));
+    if(role === 'ADMIN') {
+      dispatch(deleteCommentByAdmin({movieId, commentId}))
+    } else {
+      dispatch(deleteComment({movieId, commentId}));
+    }
     console.log(`movieId: ${movieId}, commentId: ${commentId}, userId: ${userId}`);
   }
   return (
     <button onClick={handleDelete} style={{color: "red", backgroundColor:"white", border:"none", padding:"10px", borderRadius:"50%"}}>
-      <FaRegTimesCircle size={30} />
+      {/* <FaRegTimesCircle size={30} /> */}usun
     </button>
   );
 }

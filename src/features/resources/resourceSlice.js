@@ -68,6 +68,7 @@ export const wishlistedThunk = createAsyncThunk("Genres/wishlistedThunk", async 
     return result.data;
 });
 
+
 const genresSlice = createSlice({
     name: 'Genres',
     initialState: {
@@ -77,7 +78,8 @@ const genresSlice = createSlice({
         loading: false,
         error: null
     },
-    reducers: {},
+    reducers: {
+    },
     extraReducers: builder => {
         builder.addCase(fetchGenres.pending, (state, action) => {
             state.loading = true;

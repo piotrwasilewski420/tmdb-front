@@ -1,12 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Movie = ({ title, released, tagline, poster_path, rating,id }) => {
+const Movie = ({ title, released, tagline, poster_path, rating, id, isRedirect }) => {
+  const dispatch = useDispatch();
+  const {role} = useSelector((state) => state.user);
   const navigate = useNavigate();
   const redirect = (id) => {
-    navigate(`/profile/movie/${id}`);
+    if (isRedirect == false) {
+      navigate('/login');
+    } else {
+      navigate(`/profile/movie/${id}`);
+    }
   };
 
+    console.log(rating);
     const actual_rating = Math.round(rating * 100) / 100;
     let color = 'bg-yellow-500 rounded-full p-1';
     if(actual_rating > 4) color = 'bg-green-500 rounded-full p-1';
@@ -21,6 +29,19 @@ const Movie = ({ title, released, tagline, poster_path, rating,id }) => {
         <div className={color} >
         <p className="text-xm font-medium text-white" >{actual_rating}/5</p>
         </div>
+        {
+          role == 'ADMIN' && (
+          <button className="bg-red-500 rounded-full p-1 ml-2"
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch()
+          }}
+          >
+           DELETE
+          </button>
+          )
+        }
+        
       </div>
     </div>
   );

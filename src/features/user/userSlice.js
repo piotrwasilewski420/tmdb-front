@@ -114,6 +114,6 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { clearError } = userSlice.actions;
+export const { clearError, logout } = userSlice.actions;
 
 

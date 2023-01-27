@@ -75,7 +75,7 @@ const DetailedMovie = () => {
 
   return (movieLoading || resourcesLoading) ? (<LoadingSpinner/>) : (
    <>
-      <div className={styles.detailedMovie}>
+      <div className={`${styles.detailedMovie}`}>
         
         <NavProfile name={name} />
           
@@ -107,7 +107,7 @@ const DetailedMovie = () => {
           <div className={styles.movie_info}>
             <div className={styles.left}>
               <div className={styles.leftLeft}>
-              <img src={poster_path} alt={title} className={styles.poster} />
+              <img src={poster_path} alt={title} className={`${styles.poster}` + " " + "rounded-md"} />
               </div>
               <div className={styles.leftRight}>
 
@@ -148,16 +148,18 @@ const DetailedMovie = () => {
           </div>
           
         </div>
-        <div>
-        <Carousel showThumbs={false} className="">
-          {image_urls.map((image, index) => (
-            <div key={index}>
-              <img src={image} alt={`Image ${index + 1}`} className="w-500px h-500px object-cover" />
-            </div>
-          ))}
-        </Carousel>
+        <div className='flex justify-center w-full'>
+          <Carousel showThumbs={false} className='w-[80%]'>
+            {image_urls.map((image, index) => (
+              <div className='flex justify-center rounded w-full'>
+                <div key={index}>
+                  <img src={image} alt={`Image ${index + 1}`} className="w-500px h-500px object-cover rounded-xl" />
+                </div>
+              </div>
+            ))}
+          </Carousel>
         </div>
-          <div className={styles.title}>Comments:</div>
+          <div className={`${styles.title}` + ' ' + 'px-6 py-2'}>Comments:</div>
         <Comments comments={comments} movieId={id}/>
         <div className="px-6 py-4">
           <textarea onChange={handleChange} className="bg-gray-200 rounded-lg w-full py-2 px-3" placeholder="Leave a comment"></textarea>
