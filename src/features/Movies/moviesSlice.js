@@ -20,7 +20,7 @@ export const fetchMovies = createAsyncThunk("Movies/getMovies", async (payload) 
 
 export const deleteMovie = createAsyncThunk("Movie/deleteMovie", async (payload) => {
     try {
-        const response = await axiosInstance.delete(`/movie/${payload}`);
+        const response = await axiosInstance.delete(`admin/movie/${payload}`);
         if(response.status !== 200) {
             throw new Error("No movie");
         }
@@ -102,6 +102,9 @@ const moviesSlice = createSlice({
                 });
             }
 
+        },
+        deleteMovie: (state, action) => {
+            state.movies = state.movies.filter(movie => movie.id !== action.payload);
         }
     },
     extraReducers: builder => {

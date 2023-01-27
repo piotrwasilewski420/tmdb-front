@@ -26,7 +26,7 @@ const Home = () => {
             loading ? <LoadingSpinner/> : error ? <Error message={error}/> : (
                 <div className="flex flex-col items-center w-full">
                     <h1 className="font-semibold text-4xl my-4">Top Movies by rating:</h1>
-                    <div className="flex flex-wrap mx-[20%]">
+                    <div className="flex flex-wrap w-1/2 justify-between">
                         {topMovies.map(({movie,rating}) => 
                         (
                         <Movie key={movie.id} title={movie.title} released={movie.released} tagline={movie.tagline} poster_path={movie.poster_path} rating={rating} id={movie.id} isRedirect={false}

@@ -6,8 +6,8 @@ import MoviesPanel from '../Movies/MoviesPanel';
 import LoadingSpinner from '../Movies/LoadingSpinner/LoadingSpinner';
 
 export default function UserProfile() {
-    const {name} = useSelector(state => state.user);
-    const {loading} = useSelector(state => state.movies);
+  const {name} = useSelector(state => state.user);
+  const {loading} = useSelector(state => state.movies);
   return (
     <>
       <NavProfile name={name} className="navbar"/>

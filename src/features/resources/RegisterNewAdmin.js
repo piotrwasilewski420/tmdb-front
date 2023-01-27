@@ -39,7 +39,7 @@ const RegisterNewAdmin = () => {
                 Email
               </label>
               <Field
-                className={`form-input w-full py-2 px-3 text-gray-700 leading-tight rounded-md ${
+                className={`form-input w-full py-2 px-3 text-gray-700 leading-tight rounded-md border border-1 border-gray-500 ${
                   errors.email && touched.email
                     ? 'border-red-500'
                     : 'border-gray-300'
@@ -60,7 +60,7 @@ const RegisterNewAdmin = () => {
                 Password
               </label>
               <Field
-                className={`form-input w-full py-2 px-3 text-gray-700 leading-tight rounded-md ${
+                className={`form-input w-full py-2 px-3 text-gray-700 leading-tight rounded-md border border-1 border-gray-500 ${
                   errors.password && touched.password
                     ? 'border-red-500'
                     : 'border-gray-300'

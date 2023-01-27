@@ -4,6 +4,7 @@ import styles from "./detailedMovie.module.scss";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { deleteComment, deleteCommentByAdmin } from './detailedMovieSlice';
+import { RxCross1 } from 'react-icons/rx'
 
 
 const Comment = ({ comment, name, id, movieId, commentId }) => {
@@ -49,8 +50,8 @@ const CancelButton = ({
     console.log(`movieId: ${movieId}, commentId: ${commentId}, userId: ${userId}`);
   }
   return (
-    <button onClick={handleDelete} style={{color: "red", backgroundColor:"white", border:"none", padding:"10px", borderRadius:"50%"}}>
-      {/* <FaRegTimesCircle size={30} /> */}usun
+    <button onClick={handleDelete} style={{color: "red", border:"none", padding:"10px", borderRadius:"50%"}}>
+      <RxCross1 size={20}/>
     </button>
   );
 }

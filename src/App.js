@@ -12,6 +12,8 @@ import Users from './features/user/Users';
 import MoviesAdmin from './features/Movies/MoviesAdmin';
 import Blocked from './features/Movies/Blocked';
 import Report from './components/Report';
+import Favorites from './features/user/Favorites';
+import Wishlist from './features/user/Wishlist';
 
 const App = () => {
 
@@ -27,6 +29,8 @@ const App = () => {
         <Route path="/profile/actives" element={isLoggedIn ? <Actives/> : <Unauthorized/>}/>
         <Route path="/profile/blocked" element={isLoggedIn ? <Blocked/> : <Unauthorized/>}/>
         <Route path="/filter" element={<Filter/>}/>
+        <Route path='/profile/favs' element={isLoggedIn ? <Favorites/> : <Unauthorized/>}/>
+        <Route path="/profile/wishlist" element={role ? <Wishlist/> : <Unauthorized/>}/>
         <Route path="/admin/users" element={role ? <Users/> : <Unauthorized/>}/>
         <Route path="/admin/movies" element={role ? <MoviesAdmin/> : <Unauthorized/>}/>
         <Route path="/admin/report" element={role ? <Report/> : <Unauthorized/>}/>

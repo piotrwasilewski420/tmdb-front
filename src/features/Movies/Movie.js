@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { deleteMovie } from './moviesSlice';
 
 const Movie = ({ title, released, tagline, poster_path, rating, id, isRedirect }) => {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const Movie = ({ title, released, tagline, poster_path, rating, id, isRedirect }
     if(actual_rating > 4) color = 'bg-green-500 rounded-full p-1';
     else if(actual_rating < 3) color = 'bg-red-500 rounded-full p-1';
   return (
-    <div onClick={() => redirect(id)} className="bg-gray-900 p-4 rounded-lg w-52 m-1">
-      <img src={poster_path} alt={title} className="w-48" />
+    <div className="bg-gray-900 p-4 rounded-lg w-52 m-1">
+      <img onClick={() => redirect(id)} src={poster_path} alt={title} className="w-48" />
       <h2 className="text-xl font-medium text-white">{title}</h2>
       <p className="text-gray-500">{released}</p>
       <p className="text-gray-400">{tagline}</p>
@@ -33,8 +34,7 @@ const Movie = ({ title, released, tagline, poster_path, rating, id, isRedirect }
           role == 'ADMIN' && (
           <button className="bg-red-500 rounded-full p-1 ml-2"
           onClick={(e) => {
-            e.preventDefault();
-            dispatch()
+            dispatch(deleteMovie(id));
           }}
           >
            DELETE

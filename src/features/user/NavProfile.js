@@ -2,15 +2,24 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "./userSlice";
+import { AiOutlineUser } from 'react-icons/ai'
 
-const NavProfile = ({name}) => {
+const NavProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {role} = useSelector(state => state.user);
+  const {name} = useSelector(state => state.user);
   const {isLoggedIn} = useSelector(state => state.user);
     return (
         <nav className="bg-gray-800 text-white flex items-center justify-around py-2 fixed top-0 w-full z-10">
-      <div className="absolute left-6 text-whitte font-semibold hover:cursor-pointer hover:text-gray-200 duration-200" onClick={() => navigate(-1)}>{`<<< Go back`}</div>
+      <div className="flex items-center gap-8 absolute left-6 text-whitte font-semibold hover:cursor-pointer hover:text-gray-200 duration-200">
+        <div onClick={() => navigate(-1)}>
+          {`<<< Go back`}
+        </div>
+        <div onClick={() => navigate('/profile')}> 
+          <AiOutlineUser size={20} />
+        </div>
+      </div>
       <div className="text-lg font-medium">
         Welcome, {role === 'ADMIN' ? 'Mighty Admin' : name}!
       </div>
@@ -31,16 +40,16 @@ const NavProfile = ({name}) => {
           to="/profile/actives"
           className="block px-2 py-1 text-sm font-medium hover:text-indigo-300 rounded-md hover:bg-indigo-50"
         >
-          Most Actives
+          Most Active
         </Link>
         <Link
-          to="/favorites"
+          to="/profile/favs"
           className="block px-2 py-1 text-sm font-medium hover:text-indigo-300 rounded-md hover:bg-indigo-50"
         >
           Favorites
         </Link>
         <Link
-          to="/wishlist"
+          to="/profile/wishlist"
           className="block px-2 py-1 text-sm font-medium hover:text-indigo-300 rounded-md hover:bg-indigo-50"
         >
           Wishlist
